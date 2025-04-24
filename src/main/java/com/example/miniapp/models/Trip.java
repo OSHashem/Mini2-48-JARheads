@@ -15,6 +15,9 @@ public class Trip {
     private String destination;
     private Double tripCost;
 
+    @OneToOne
+    private Payment payment;
+
     @ManyToOne
     @JoinColumn(name = "customer_id") // Foreign key in Trip table
     private Customer customer;
