@@ -4,6 +4,7 @@ import com.example.miniapp.models.Customer;
 import com.example.miniapp.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -50,9 +51,13 @@ public class CustomerController {
     //    Delete request to remove a customer.
     @DeleteMapping("/delete/{id}")
     public String deleteCustomer(@PathVariable Long id) {
-
-        customerService.deleteCustomer(id);
-        return "Customer with ID " + id + " has been deleted.";
+        try {
+            customerService.deleteCustomer(id);
+            return "Customer with ID " + id + " has been deleted.";
+        } catch (ResponseStatusException ex) {
+            // Return the error message as part of the response in case the customer doesn't exist
+            return ex.getReason();
+        }
     }
 
     //    Get request to retrieve customers whose email address ends with a specific domain.
