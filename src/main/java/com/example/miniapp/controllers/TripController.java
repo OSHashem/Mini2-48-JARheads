@@ -3,7 +3,6 @@ package com.example.miniapp.controllers;
 import com.example.miniapp.models.Trip;
 import com.example.miniapp.services.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,29 +33,26 @@ public class TripController {
 
     // Get a specific trip by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Trip> getTripById(@PathVariable Long id) {
-        Trip trip = tripService.getTripById(id);
-        if (trip == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(trip);
+    public Trip getTripById(@PathVariable Long id) {
+        return tripService.getTripById(id);
     }
 
     // Update an existing trip by ID
     @PutMapping("/update/{id}")
-    public ResponseEntity<Trip> updateTrip(@PathVariable Long id, @RequestBody Trip updatedTrip) {
-        Trip trip = tripService.updateTrip(id, updatedTrip);
-        if (trip == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(trip);
+    public Trip updateTrip(@PathVariable Long id, @RequestBody Trip updatedTrip) {
+        return tripService.updateTrip(id, updatedTrip);
+
     }
 
     // Delete a trip by ID
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteTrip(@PathVariable Long id) {
-        tripService.deleteTrip(id);
-        return ResponseEntity.noContent().build();
+    public String deleteTrip(@PathVariable Long id) {
+        try{
+            tripService.deleteTrip(id);
+            return "Trip deleted successfully with ID: " + id;
+        } catch (IllegalArgumentException e) {
+            return "Trip not found for ID: " + id;
+        }
     }
 
     // Find trips within a date range

@@ -1,16 +1,15 @@
-package com.example.miniapp.controller;
+package com.example.miniapp.controllers;
 
 import com.example.miniapp.models.Captain;
 import com.example.miniapp.services.CaptainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/captains")
+@RequestMapping("/captain")
 public class CaptainController {
 
     private final CaptainService captainService;
@@ -22,36 +21,35 @@ public class CaptainController {
 
 
     @PostMapping("/addCaptain")
-    public ResponseEntity<Captain> addCaptain(@RequestBody Captain captain) {
+    public Captain addCaptain(@RequestBody Captain captain) {
         Captain savedCaptain = captainService.addCaptain(captain);
-        return new ResponseEntity<>(savedCaptain, HttpStatus.CREATED);
+        return savedCaptain;
     }
 
 
     @GetMapping("/allCaptains")
-    public ResponseEntity<List<Captain>> getAllCaptains() {
+    public List<Captain> getAllCaptains() {
         List<Captain> captains = captainService.getAllCaptains();
-        return new ResponseEntity<>(captains, HttpStatus.OK);
+        return captains;
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Captain> getCaptainById(@PathVariable Long id) {
+    public Captain getCaptainById(@PathVariable Long id) {
         Captain captain = captainService.getCaptainById(id);
-        return new ResponseEntity<>(captain, HttpStatus.OK);
+        return captain;
     }
 
 
     @GetMapping("/filterByRating")
-    public ResponseEntity<List<Captain>> getCaptainsByRating(@RequestParam Double ratingThreshold) {
+    public List<Captain> getCaptainsByRating(@RequestParam Double ratingThreshold) {
         List<Captain> captains = captainService.getCaptainsByRating(ratingThreshold);
-        return new ResponseEntity<>(captains, HttpStatus.OK);
+        return captains;
     }
 
 
     @GetMapping("/filterByLicenseNumber")
-    public ResponseEntity<Captain> getCaptainByLicenseNumber(@RequestParam String licenseNumber) {
-        Captain captain = captainService.getCaptainByLicenseNumber(licenseNumber);
-        return new ResponseEntity<>(captain, HttpStatus.OK);
+    public Captain getCaptainByLicenseNumber(@RequestParam String licenseNumber) {
+        return captainService.getCaptainByLicenseNumber(licenseNumber);
     }
 }

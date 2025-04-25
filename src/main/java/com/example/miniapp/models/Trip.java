@@ -26,9 +26,9 @@ public class Trip {
     private Customer customer;
 
     // One-to-One relationship with Payment
-    @OneToOne(mappedBy = "trip") // This makes Trip the inverse side of the relationship
+    @OneToOne(mappedBy = "trip")
     private Payment payment;
-
+    
     // Default constructor
     public Trip() {}
 

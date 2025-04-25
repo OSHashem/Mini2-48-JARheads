@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Payment {
@@ -20,9 +21,11 @@ public class Payment {
     private String paymentMethod;
 
     private Boolean paymentStatus;
-
-    @JoinColumn(name = "trip_id") // Foreign key in Payment table
-    private Long tripId; // Assuming tripId is a Long, adjust as necessary
+    
+    
+    @OneToOne
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
 
     // constructors
     public Payment() {}
@@ -63,13 +66,7 @@ public class Payment {
     public void setPaymentStatus(Boolean paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
-    public Long getTripId() {
-        return tripId;
-    }
-    public void setTripId(Long tripId) {
-        this.tripId = tripId;
-    }
-    
+
     @Override
     public String toString() {
         return "Payment{" +
@@ -77,8 +74,9 @@ public class Payment {
                 ", amount=" + amount +
                 ", paymentMethod='" + paymentMethod + '\'' +
                 ", paymentStatus=" + paymentStatus +
-                ", tripId=" + tripId +
+                ", trip_id=" + (trip != null ? trip.getId() : null) +
                 '}';
     }
+    
 
 }

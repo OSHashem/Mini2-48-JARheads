@@ -6,21 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RatingService {
     private final RatingRepository ratingRepository;
+
     @Autowired
     public RatingService(RatingRepository ratingRepository) {
         this.ratingRepository = ratingRepository;
     }
-    public Rating addRating(Rating rating) {
 
+    public Rating addRating(Rating rating) {
         if (rating.getRatingDate() == null) {
             rating.setRatingDate(LocalDateTime.now());
         }
-
 
         if (rating.getScore() < 1 || rating.getScore() > 5) {
             throw new IllegalArgumentException("Score must be between 1 and 5");
@@ -28,7 +29,6 @@ public class RatingService {
 
         return ratingRepository.save(rating);
     }
-
 
     public Rating updateRating(String id, Rating updatedRating) {
         Optional<Rating> existingRatingOpt = ratingRepository.findById(id);
@@ -54,4 +54,21 @@ public class RatingService {
         return ratingRepository.save(existingRating);
     }
 
+    public void deleteRating(String id) {
+        if (!ratingRepository.existsById(id)) {
+            throw new IllegalArgumentException("Rating with ID " + id + " not found.");
+        }
+        ratingRepository.deleteById(id);
+    }
+
+    public List<Rating> getRatingsByEntity(Long entityId, String entityType) {
+        return ratingRepository.findByEntityIdAndEntityType(entityId, entityType);
+    }
+
+    public List<Rating> findRatingsAboveScore(int minScore) {
+        if (minScore < 1 || minScore > 5) {
+            throw new IllegalArgumentException("Score must be between 1 and 5");
+        }
+        return ratingRepository.findByScoreGreaterThan(minScore);
+    }
 }

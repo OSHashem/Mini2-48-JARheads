@@ -5,7 +5,10 @@ package com.example.miniapp.services;
 import com.example.miniapp.models.Captain;
 import com.example.miniapp.repositories.CaptainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -38,8 +41,7 @@ public class CaptainService {
 
 
     public Captain getCaptainByLicenseNumber(String licenseNumber) {
-        return captainRepository.findByLicenseNumber(licenseNumber)
-                .orElseThrow(() -> new RuntimeException("Captain not found with license number: " + licenseNumber));
+        return captainRepository.findByLicenseNumber(licenseNumber);
     }
 }
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CaptainRepository extends JpaRepository<Captain, Long> {
 
-    Optional<Captain> findByLicenseNumber(String licenseNumber);
+    Captain findByLicenseNumber(String licenseNumber);
     List<Captain> findByAvgRatingScoreGreaterThan(double threshold);
 
 }
