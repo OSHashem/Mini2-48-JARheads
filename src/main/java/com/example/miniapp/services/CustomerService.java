@@ -3,7 +3,9 @@ package com.example.miniapp.services;
 import com.example.miniapp.models.Customer;
 import com.example.miniapp.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -50,9 +52,8 @@ public class CustomerService {
 
     //    To delete a customer record from the system.
     public void deleteCustomer(Long id) {
-
         if (!customerRepository.existsById(id)) {
-            throw new RuntimeException("Customer not found with ID: " + id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
         }
         customerRepository.deleteById(id);
     }
