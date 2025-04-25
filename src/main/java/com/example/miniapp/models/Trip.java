@@ -15,19 +15,24 @@ public class Trip {
     private String destination;
     private Double tripCost;
 
-    @OneToOne
-    private Payment payment;
-
+    // Many-to-One relationship with Captain
     @ManyToOne
-    @JoinColumn(name = "customer_id") // Foreign key in Trip table
+    @JoinColumn(name = "captain_id")
+    private Captain captain;
+
+    // Many-to-One relationship with Customer
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    // Other fields like Captain, Payment (if needed)
+    // One-to-One relationship with Payment
+    @OneToOne(mappedBy = "trip") // This makes Trip the inverse side of the relationship
+    private Payment payment;
 
-    // Constructors
-
+    // Default constructor
     public Trip() {}
 
+    // Constructor for partial initialization
     public Trip(LocalDateTime tripDate, String origin, String destination, Double tripCost) {
         this.tripDate = tripDate;
         this.origin = origin;
@@ -35,17 +40,18 @@ public class Trip {
         this.tripCost = tripCost;
     }
 
-    public Trip(Long id, LocalDateTime tripDate, String origin, String destination, Double tripCost, Customer customer) {
-        this.id = id;
+    // Full constructor
+    public Trip(LocalDateTime tripDate, String origin, String destination, Double tripCost, Captain captain, Customer customer, Payment payment) {
         this.tripDate = tripDate;
         this.origin = origin;
         this.destination = destination;
         this.tripCost = tripCost;
+        this.captain = captain;
         this.customer = customer;
+        this.payment = payment;
     }
 
-    // Getters and Setters
-
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -86,11 +92,41 @@ public class Trip {
         this.tripCost = tripCost;
     }
 
+    public Captain getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(Captain captain) {
+        this.captain = captain;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id=" + id +
+                ", tripDate=" + tripDate +
+                ", origin='" + origin + '\'' +
+                ", destination='" + destination + '\'' +
+                ", tripCost=" + tripCost +
+                ", captain=" + captain +
+                ", customer=" + customer +
+                ", payment=" + payment +
+                '}';
     }
 }
